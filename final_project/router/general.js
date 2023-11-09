@@ -119,16 +119,7 @@ public_users.get("/review/:isbn", function (req, res) {
     // Retrieve the reviews for the book
     const bookReviews = books[isbn].reviews;
 
-    // Check if there are any reviews for the book
-    if (Object.keys(bookReviews).length > 0) {
-      // Reviews found, return them as a JSON response
-      return res.status(200).json(bookReviews);
-    } else {
-      // No reviews found for the book, return a message
-      return res
-        .status(200)
-        .json({ message: "No reviews available for this book" });
-    }
+    return res.status(200).json(bookReviews);
   } else {
     // Book not found, return a 404 Not Found response
     return res.status(404).json({ message: "Book not found" });

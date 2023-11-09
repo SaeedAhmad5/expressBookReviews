@@ -58,7 +58,7 @@ regd_users.post("/login", (req, res) => {
   req.session.token = token;
 
   // Return a success message with the JWT token
-  return res.status(200).json({ message: "Authentication successful", token });
+  return res.status(200).send("User auccessfully logged in");
 });
 
 // Add a book review
@@ -71,7 +71,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
   // Check if the username is available in the session
   if (!username) {
-    return res.status(401).json({ message: "Authentication required" });
+    return res.status(401).json({ message: "Authentication required", token });
   }
 
   // Retrieve the review text from the request query
@@ -97,7 +97,9 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Review added/modified successfully" });
+      .send(
+        `The Review for the book with ISBN ${isbn} has been added/modified successfully`
+      );
   } else {
     // Book not found, return a 404 Not Found response
     return res.status(404).json({ message: "Book not found" });
@@ -124,7 +126,11 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
       // Delete the user's review for this ISBN
       delete books[isbn].reviews[username];
 
-      return res.status(200).json({ message: "Review deleted successfully" });
+      return res
+        .status(200)
+        .send(
+          `Review for the ISBN ${isbn} posted by the user ${username} deleted successfully`
+        );
     } else {
       // If the user has not posted a review, return a 404 Not Found response
       return res
